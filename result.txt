@@ -1,0 +1,12 @@
+PDF 文件：D:/SOFTWARE/AddComment/see.pdf
+配置文件：{
+        "FRMDM": "INFORMED CONSENT OBTAINED",
+        "FRMDRUGTERM": {
+                "sctDRUGTERM": {
+                        "lstDRUGCOMP": {
+                                "COMPLETED": "DSTERM=COMPLETED",
+                                "compile#(.+)": "re#DISTERM=\\1"
+                        }
+                }
+        }
+}
