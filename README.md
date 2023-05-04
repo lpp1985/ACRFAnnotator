@@ -18,3 +18,10 @@ Then generated the annotated.pdf by following command:
 python3 AddComment.py  -p blank.pdf -j Annotation.json -o Annotated.pdf
 
 ```
+Or you can simply activated GUI to run analysis！
+```
+python3 GUI.py
+```
+
+
+```
