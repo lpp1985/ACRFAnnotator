@@ -9,7 +9,7 @@ flowchart TD;
     G(Annotated Json)
     E-->G
     G====>D[["AddComment.py"]]
-    A====>Dx
+    A====>D
     D-->V("Annotated CRF PDF File")
 
 ```
