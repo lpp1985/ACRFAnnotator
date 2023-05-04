@@ -1,0 +1,15 @@
+{
+	"frmDM":"INFORMED CONSENT OBTAINED",
+						
+	"frmDRUGTERM":{
+		"sctDRUGTERM":{
+			"lstDRUGCOMP":{
+				"COMPLETED":"DSTERM=COMPLETED"  ,
+
+				"compile#(.+)":"re#DISTERM=\\1"
+
+			}
+		 
+		 }
+}
+}
