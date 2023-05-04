@@ -6,6 +6,7 @@ Automated adding annotation to PDF with json formatted data.
 
 ```pip install -r requirements.txt```
 # Usage
+First of all, you should analysis the content structure of blank pdf and generate a  hierachical json to store the structure of PDF table.
 
 ```
 python3 GenerateJson.py  -p blank.pdf -o Annotation.json
