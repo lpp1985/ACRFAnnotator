@@ -1,0 +1,253 @@
+"";"Contents"
+"1";"Annotated Study Book - AT3SC002                                                                                                                                                                               Page 5 of 195
+
+
+     DS--Disposition                              'DSTERM = INFORMED CONSENT OBTAINED
+AT3SC002: Demographic Data and Informed Consent Recording (DM) [frmDM]
+Demographics [sctDM]
+
+1.*   Date of birth                                                                                       [dtmBRTH] (DD/MM/YYYY)
+     [Date of birth]                                                                                      Req      / Req      / Req       (1930-2023)
+
+2.*   Subject signed informed consent on                                                                  [dtmIFC] (DD/MM/YYYY)
+     [Date of informed consent]                                                                           Req      / Req      / Req       (2015-2023)
+
+  *   Age (calculated) [read-only]                                                                        [numAGE]
+3.
+      [Age]                                                                                                N3        (years)
+
+4.*   Sex at birth                                                                                        [lstSXBRTH]
+     [Sex at birth]                                                                                       [A:M]      Male
+
+5.*   Race                                                                                                [lstRC]
+     [Race]                                                                                               [A:REPORTED]               [lstRACE]
+                                                                                                                                      Reported, please specify:
+                                                                                                                                      [A:WHITE]                   White
+                                                                                                                                      [A:BLACK]                   Black or African-American
+                                                                                                                                      [A:ASIAN]                   Asian
+                                                                                                                                      [A:INDIAN]                  American Indian or Alaska Native
+                                                                                                                                      [A:HAWAIIAN]                Native Hawaiian or other Pacific Islander
+                                                                                                                                      [A:OTHER]                   [txtRACEOTH]
+                                                                                                                                                                  Other, please specify: A60
+
+
+                                                                                                           [A:NOT REPORTED]           Not Available/Not Reported
+
+6.*   Ethnicity                                                                                           [lstETHNICITY]
+     [Ethnicity]                                                                                          [A:HISPANIC OR LATINO]                 Hispanic or Latino
+                                                                                                           [A:NOT HISPANIC OR LATINO]             Not Hispanic or Latino
+                                                                                                           [A:NA]                                 Not Available/Not Reported
+
+7.*   Part in parent study?                                                                               [lstPART]
+     [Part parent study]                                                                                  [A:PART B]        Part B
+                                                                                                           [A:PART C]        Part C
+                                                                                                           [A:PART D]        Part D
+
+8.*   Did the patient have an interruption between parent study and roll-over to this study?              [lstDAYS]
+                                                                                                          [A:Y]      Yes
+      More than a month between completion of parent study treatment and roll-over to                      [A:N]      No
+      this study will be considered an interruption.
+      [Subject initiates dosing]
+
+9.*   What is the subject's HIV status?                                                                   [lstHIV]
+     [HIV status]                                                                                         [A:POSITIVE]        Positive
+                                                                                                           [A:NEGATIVE]        Negative
+
+Will the Whole Blood Clot Formation test (ROTEM) be performed at this site? [sctDYN]
+
+10.* Will the Whole Blood Clot Formation test (ROTEM) be performed at this site?                          [lstWBCLT]
+ [ROTEM available]                                                                                        [A:Y]      Yes
+                                                                                                           [A:N]      No
+
+Subject Identifiers [sctSUBID]
+
+11.* Subject ID (3-digits) [read-only]                                                                    [txtSHORTID1]
+ [Short Subject ID]                                                                                       A3
+
+12.   Site and Subject ID from parent study                                                               [txtSUBJIDPS]
+     [Parent study ID]                                                                                    A7
+
+13.* Site and Subject ID [hidden]                                                                         [txtSUBJID]
+     [Site and Subject ID]                                                                                 A7
+
+14.   For office use only [hidden]                                                                        [numEMAIL1]
+      [For office use only]                                                                                N3
+
+15.   For office use only [hidden]                                                                        [numEMAIL2]
+      [For office use only]                                                                                N3
+
+16.   For office use only [hidden]                                                                        [numEMAIL3]
+      [For office use only]                                                                                N3
+
+  Key: [*] = Item is required [] = Source verification required
+  Note: Source verification critical settings made in InForm will override any settings made in Central Designer.
+
+
+
+Codelist Values Tables: Demographic Data and Informed Consent Recording
+
+
+
+
+file:///C:/Users/Nico_Van_Dessel/AppData/Local/Apps/2.0/8ROY8BMP.9NT/87KKKWE2.8YL/orac..47.0_7e15c60fcb5f8c5e_0006.0002_e3a46b3970a1f84d/HtmlResources/AnnotatedStudybook.html                                   21-Sep-21
+"
+"2";"Annotated Study Book - AT3SC002                                                                                                                                                                                                               Page 178 of 195
+
+ DS--Disposition
+ RELREC--Related Records
+AT3SC002: Drug Termination (DRUG TERM) [frmDRUGTERM]
+Study Drug Completion / Termination [sctDRUGTERM]
+
+1.* Date of study drug termination
+ [Date of study drug termination]
+                                                                                                           [dtmDRUGTERM] (DD/MM/YYYY)
+                                                                                                            Req     / Req   / Req   (2015-2023)
+                                                                                                                                                           DSTERM='COMPLETED'. If LSTDRUGCOMP_C = 'COMPLETED' then DSTERM='COMPLETED'.
+2.* Please specify if the patient completed the entire course of ALN-AT3SC treatment as                    [lstDRUGCOMP]
+ specified in the protocol or if the patient discontinued ALN-AT3SC early                                  [A:COMPLETED]       Completed      DSTERM='COMPLETED'
+    [Please specify if the patient completed the entire course of ALN-AT3SC treatment]                      [A:DISCONTINUED]    [lstDISCRS]
+                                                                                                                                Discontinued - please specify the primary reason for early termination
+                                                                                                                                [A:ADVERSE EVENT]                   [cmpAE]         DSTERM= AVDERSE EVENT
+                                                                                                                                                                    Adverse Event
+                                                                                                                                                                    Please specify AE#(s) - as recorded on AE form
+                                                                                                                                                                    [numAESEQ1] [numAESEQ2] [numAESEQ3] [numAESEQ4] [numAESEQ5] [numAESEQ6]
+                                                                                                                                                                    N3              N3             N3            N3          N3         N3
+                                                                                                                                [A:DEATH]                           Death       DSTERM= DEATH
+                                                                                                                                [A:LOST TO FOLLOW-UP]               Lost to follow-up DSTERM=FOLLUW-UP
+                                                                                                                                [A:NON-COMPLIANT]                   Non-Compliance with Study Drug
+                                                                                                                                [A:PHYSICIAN DECISION]              [txtDISCPHYSDEC]
+                                                                                                                                                                    Physician Decision, please specify   DSTERM= TXTDISCPHYSDEC
+                                                                                                                                                                    A200
+
+                                                                                                                                [A:PROTOCOL VIOLATION]              [txtDISCPV]
+                                                                                                                                                                    Protocol Violation, please specify
+                                                                                                                                                                    A200
+
+                                                                                                                                [A:STUDY TERMINATED]                Study Terminated by Sponsor
+                                                                                                                                [A:SUBJECT WITHDREW CONSENT]        Subject Withdrew Consent
+                                                                                                                                [A:OTHER]                           [txtDISCOTH]
+                                                                                                                                                                    Other, please specify
+                                                                                                                                                                    A200
+
+                                                                                                                                [A:AT]                              More than 1 AT measurement <15%
+                                                                                                                                [A:EMERGENCY]                       Temporary discontinuation due to a regional or national emergency
+
+3.* Will the patient continue to use commercially available fitusiran?                                     [lstCOMMERC]
+   [Will the patient continue to use commercially available fitusiran?]                                    [A:Y]    Yes
+                                                                                                            [A:N]    No
+
+4.   For office use only [hidden]                                                                          [numEMAIL1]
+     [For office use only]                                                                                  N3
+
+5.   For office use only [hidden]                                                                          [numEMAIL2]
+     [For office use only]                                                                                  N3
+
+6.   For office use only [hidden]                                                                          [numEMAIL3]
+     [For office use only]                                                                                  N3
+
+  Key: [*] = Item is required [] = Source verification required
+  Note: Source verification critical settings made in InForm will override any settings made in Central Designer.
+
+
+
+Codelist Values Tables: Drug Termination
+Codelist RefName Codelist Data Type Subset Label                                                                                    Code                             Codelist Item RefName         Data Variable RefName
+clCompDisc              String                             Completed                                                                COMPLETED                        citmCompDisc_Comp             lstDRUGCOMP
+                                                           Discontinued                                                             DISCONTINUED                     citmCompDisc_Disc
+clDISCRS                String                             Adverse Event                                                            ADVERSE EVENT                    citmDISCRS_AE                 lstDISCRS
+                                                           Death                                                                    DEATH                            citmDISCRS_Death
+                                                           Lost to follow-up                                                        LOST TO FOLLOW-UP                citmDISCRS_LostFU
+                                                           Non-Compliance with Study Drug                                           NON-COMPLIANT                    citmDISCRS_NonCompliant
+                                                           Physician Decision                                                       PHYSICIAN DECISION               citmDISCRS_PhysDec
+                                                           Protocol Violation                                                       PROTOCOL VIOLATION               citmDISCRS_PV
+                                                           Study Terminated by Sponsor                                              STUDY TERMINATED                 citmDISCRS_StudyTerm
+                                                           Subject Withdrew Consent                                                 SUBJECT WITHDREW CONSENT citmDISCRS_WDConsent
+                                                           Other                                                                    OTHER                            citmDISCRS_Other
+                                                           More than 1 AT measurement <15%                                          AT                               citmDISCRS_AT
+                                                           Temporary discontinuation due to a regional or national emergency EMERGENCY                               citmDISCRS_EMERGENCY
+clYesNo                 String                             Yes                                                                      Y                                citmYesNo_Y                   lstCOMMERC
+
+
+
+
+file:///C:/Users/Nico_Van_Dessel/AppData/Local/Apps/2.0/8ROY8BMP.9NT/87KKKWE2.8YL/orac..47.0_7e15c60fcb5f8c5e_0006.0002_e3a46b3970a1f84d/HtmlResources/AnnotatedStudybook.html                                                                     21-Sep-21
+"
+"3";"Annotated Study Book - AT3SC002                                                                                                                                                                                                              Page 180 of 195
+
+ DS--Disposition
+
+AT3SC002: Trial Termination (TERM) [frmTERM]
+Trial Completion / Discontinuation [sctTERM]
+
+1.* Please specify if the subject completed the entire course of the trial as specified in the             [lstCOMPDISC]
+ protocol or if the subject discontinued from the trial early                                              [A:COMPLETED]      [dtmCOMP] (DD/MM/YYYY)             DSTERM=COMPLETE
+    [Completed/Discontinued]                                                                                                   Completed, date of study completion Req       / Req        / Req     (2015-2023)
+                                                                                                            [A:DISCONTINUED]   [dtmDISC] (DD/MM/YYYY)       DSTERM=DISCONTINUE
+                                                                                                                               Discontinued, date of study discontinuation Req       / Req        / Req    (2015-2023)
+                                                                                                                               [lstDISCRS]
+                                                                                                                               Discontinued - please specify the primary reason for early termination
+                                                                                                                               [A:ADVERSE EVENT]                   [cmpAE]
+                                                                                                                                                                   Adverse Event       DSTERM=AVSER EVENT
+                                                                                                                                                                   Please specify AE#(s) - as recorded on AE form
+                                                                                                                                                                   [numAESEQ1] [numAESEQ2] [numAESEQ3] [numAESEQ4] [numAESEQ5] [numAESEQ6]
+                                                                                                                                                                   N3                N3               N3            N3        N3       N3
+                                                                                                                               [A:DEATH]                           Death      DSTERM=DEATH
+                                                                                                                               [A:LOST TO FOLLOW-UP]               Lost to follow-up
+                                                                                                                               [A:NON-COMPLIANT]                   Non-Compliance with Study Drug
+                                                                                                                               [A:PHYSICIAN DECISION]              [txtDISCPHYSDEC]
+                                                                                                                                                                   Physician Decision, please specify
+                                                                                                                                                                   A200
+
+                                                                                                                               [A:PROTOCOL VIOLATION]              [txtDISCPV]
+                                                                                                                                                                   Protocol Violation, please specify
+                                                                                                                                                                   A200
+
+                                                                                                                               [A:STUDY TERMINATED]                Study Terminated by Sponsor
+                                                                                                                               [A:SUBJECT WITHDREW CONSENT]        Subject Withdrew Consent
+                                                                                                                               [A:OTHER]                           [txtDISCOTH]
+                                                                                                                                                                   Other, please specify
+                                                                                                                                                                   A200
+
+                                                                                                                               [A:AT]                              More than 1 AT measurement <15%
+                                                                                                                               [A:EMERGENCY]                       Temporary discontinuation due to a regional or national emergency
+
+2.* Will the subject roll-over to the next OLE study?                                                      [lstROLLOVER]
+   [Will the subject roll-over to the next OLE study?]                                                     [A:Y]   Yes
+                                                                                                            [A:N]   No
+
+3.   For office use only [hidden]                                                                          [numEMAIL1]
+     [For office use only]                                                                                  N3
+
+4.   For office use only [hidden]                                                                          [numEMAIL2]
+     [For office use only]                                                                                  N3
+
+5.   For office use only [hidden]                                                                          [numEMAIL3]
+     [For office use only]                                                                                  N3
+
+  Key: [*] = Item is required [] = Source verification required
+  Note: Source verification critical settings made in InForm will override any settings made in Central Designer.
+
+
+
+Codelist Values Tables: Trial Termination
+Codelist RefName Codelist Data Type Subset Label                                                                                   Code                             Codelist Item RefName             Data Variable RefName
+clCompDisc              String                             Completed                                                               COMPLETED                        citmCompDisc_Comp                 lstCOMPDISC
+                                                           Discontinued                                                            DISCONTINUED                     citmCompDisc_Disc
+clDISCRS                String                             Adverse Event                                                           ADVERSE EVENT                    citmDISCRS_AE                     lstDISCRS
+                                                           Death                                                                   DEATH                            citmDISCRS_Death
+                                                           Lost to follow-up                                                       LOST TO FOLLOW-UP                citmDISCRS_LostFU
+                                                           Non-Compliance with Study Drug                                          NON-COMPLIANT                    citmDISCRS_NonCompliant
+                                                           Physician Decision                                                      PHYSICIAN DECISION               citmDISCRS_PhysDec
+                                                           Protocol Violation                                                      PROTOCOL VIOLATION               citmDISCRS_PV
+                                                           Study Terminated by Sponsor                                             STUDY TERMINATED                 citmDISCRS_StudyTerm
+                                                           Subject Withdrew Consent                                                SUBJECT WITHDREW CONSENT citmDISCRS_WDConsent
+                                                           Other                                                                   OTHER                            citmDISCRS_Other
+                                                           More than 1 AT measurement <15%                                         AT                               citmDISCRS_AT
+                                                           Temporary discontinuation due to a regional or national emergency EMERGENCY                              citmDISCRS_EMERGENCY
+clYesNo                 String                             Yes                                                                     Y                                citmYesNo_Y                       lstROLLOVER
+
+
+
+
+file:///C:/Users/Nico_Van_Dessel/AppData/Local/Apps/2.0/8ROY8BMP.9NT/87KKKWE2.8YL/orac..47.0_7e15c60fcb5f8c5e_0006.0002_e3a46b3970a1f84d/HtmlResources/AnnotatedStudybook.html                                                                    21-Sep-21
+"
