@@ -1,23 +1,30 @@
 #!/usr/bin/env python3
 import tkinter as tk
+from AddComment import AddAnnotation
+import time
 from tkinter import filedialog
 import tkinter.font as tkFont
 import os,json
 from tkinter import messagebox
+
 def select_pdf():
     # 通过文件选择框来选择PDF文件
+    global file_path
     file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
     if file_path:
         pdf_input.delete(0, tk.END)
         pdf_input.insert(0, file_path)
-        pdf_input.config(fg='black', width=15)
+        pdf_input.config(fg='black', )
     else:
         pdf_input.config(fg='black', width=0)
     check_run_button()
-
+config_path = ""
+file_path = ""
 def select_config():
     # 通过文件选择框来选择配置文件
+    global config_path
     file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.json")])
+    config_path = file_path
     config_text.delete("1.0", tk.END)
     with open(file_path, "r") as f:
         content = f.read()
@@ -29,6 +36,13 @@ def select_config():
         # config_text.insert("1.0", formatted_content)
         config_text.tag_configure('html', font=('Arial', 10), foreground='black')
         config_text.insert(tk.END, formatted_content, 'html')
+        if file_path:
+            config_input.delete(0, tk.END)
+            config_input.insert(0, file_path)
+            config_input.config(fg='black', )
+        else:
+            pdf_input.config(fg='black', width=0)
+
         check_run_button()
 
     except:
@@ -36,30 +50,38 @@ def select_config():
 
 
 
+
 def check_run_button():
+    global file_path
     # 检查是否可以启用Run按钮
-    print( pdf_input.get()  )
-    if pdf_input.get() and config_text.get("1.0", tk.END):
+    # print( file_path )
+    # print( config_text.get("1.0", tk.END) )
+    if file_path and config_text.get("1.0", tk.END).strip():
         run_button.config(state="normal")
     else:
         run_button.config(state="disabled")
 
 def run_analysis():
     # 进行注释分析，并将结果保存到文件中
-    pdf_file = pdf_input.get()
-    config_file = config_text.get("1.0", tk.END)
+    # pdf_file = pdf_input.get()
+    # config_file = config_text.get("1.0", tk.END)
     # TODO: 进行注释分析
-    result_file = "result.txt"
-    with open(result_file, "w") as f:
-        f.write("PDF 文件：{}\n配置文件：{}".format(pdf_file, config_file))
-    download_result(result_file)
+
+    timestamp = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+    result_file = "Output-"+timestamp+".pdf"
+    LOG = open( "log.log",'w' )
+    with open("log.log", "w") as LOG:
+        LOG.write("PDF 文件：{}\n配置文件：{}".format(file_path, config_path))
+    # print( config_path,file_path,result_file)
+    AddAnnotation(file_path,result_file,config_path)
+    download_result(result_file,)
 
 def download_result(result_file):
-    save_path = filedialog.asksaveasfilename(title="保存结果", initialfile="Output.pdf", filetypes=[('Text Files', '*.txt')])
+    save_path = filedialog.asksaveasfilename(title="保存结果", initialfile=result_file, filetypes=[('Text Files', '*.txt')])
     if save_path:
-        with open(result_file, 'r') as f:
+        with open(result_file, 'rb') as f:
             content = f.read()
-        with open(save_path, 'w') as f:
+        with open(save_path, 'wb') as f:
             f.write(content)
         os.remove(result_file)
 # 创建主窗口
@@ -91,6 +113,11 @@ config_frame = tk.Frame(root, height=400)
 config_frame.pack(fill="x", padx=20, pady=20)
 config_label = tk.Label(config_frame, text="配置文件输入:",font=font)
 config_label.pack(side="top")
+config_input = tk.Entry(config_frame,   highlightthickness=0 ,bd=0, width=0 ,highlightbackground="gray")
+
+
+config_input.pack(side="top", padx=0, expand=True)
+
 config_upload = tk.Button(config_frame, text="上传文件", width=15, command=select_config)
 config_upload.pack(side="top", pady=10)
 config_text = tk.Text(config_frame, height=10)

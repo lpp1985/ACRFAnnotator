@@ -1,10 +1,14 @@
+#!/usr/bin/env python3
 import tkinter as tk
+from AddComment import AddAnnotation
+import tempfile
 from tkinter import filedialog
 import tkinter.font as tkFont
 import os,json
 from tkinter import messagebox
 def select_pdf():
     # 通过文件选择框来选择PDF文件
+    global file_path
     file_path = filedialog.askopenfilename(filetypes=[("PDF Files", "*.pdf")])
     if file_path:
         pdf_input.delete(0, tk.END)
@@ -13,16 +17,19 @@ def select_pdf():
     else:
         pdf_input.config(fg='black', width=0)
     check_run_button()
-
+config_path = ""
+input_pdf = ""
 def select_config():
     # 通过文件选择框来选择配置文件
+    global config_path
     file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.json")])
+    config_path = file_path
     config_text.delete("1.0", tk.END)
     with open(file_path, "r") as f:
         content = f.read()
     try:
         json_content = json.loads(content)
-        formatted_content = json.dumps(json_content, indent=4)
+        formatted_content = json.dumps(json_content, indent=8)
 
         config_text.delete(1.0, tk.END)
         # config_text.insert("1.0", formatted_content)
@@ -32,6 +39,7 @@ def select_config():
 
     except:
         messagebox.showerror("Error", "Error loading JSON content from selected file!")
+
 
 
 
@@ -48,10 +56,13 @@ def run_analysis():
     pdf_file = pdf_input.get()
     config_file = config_text.get("1.0", tk.END)
     # TODO: 进行注释分析
-    result_file = "result.txt"
-    with open(result_file, "w") as f:
-        f.write("PDF 文件：{}\n配置文件：{}".format(pdf_file, config_file))
-    download_result(result_file)
+    result_file = tempfile.mktemp()[1]
+    LOG = open( "log.log",'w' )
+    with open("log.log", "w") as LOG:
+        LOG.write("PDF 文件：{}\n配置文件：{}".format(pdf_file, config_file))
+    print( config_path)
+    # AddAnnotation(pdf_file,)
+    # download_result(result_file,result_file)
 
 def download_result(result_file):
     save_path = filedialog.asksaveasfilename(title="保存结果", initialfile="Output.pdf", filetypes=[('Text Files', '*.txt')])
@@ -93,7 +104,15 @@ config_label.pack(side="top")
 config_upload = tk.Button(config_frame, text="上传文件", width=15, command=select_config)
 config_upload.pack(side="top", pady=10)
 config_text = tk.Text(config_frame, height=10)
-config_text.pack(side="top", padx=10, pady=10, fill="x")
+config_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+# Create a Scrollbar widget
+scrollbar = tk.Scrollbar(config_frame)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+# Attach the Scrollbar to the Text widget
+config_text.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=config_text.yview)
 
 # 创建分割线
 sep2 = tk.Canvas(root, height=2, bg="black", highlightthickness=0, bd=0, relief='ridge', highlightcolor="gray",
