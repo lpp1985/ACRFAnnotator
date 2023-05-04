@@ -1,7 +1,7 @@
-#Instroduction
+# Instroduction
 
 Automated adding annotation to PDF with json formatted data.
 
-#Install
+# Install
 
 ```pip install -r requirements.txt```
