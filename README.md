@@ -22,6 +22,3 @@ Or you can simply activated GUI to run analysis！
 ```
 python3 GUI.py
 ```
-
-
-```
