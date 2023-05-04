@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import re
 from collections import defaultdict
 
@@ -48,6 +49,10 @@ class MultiRegexDict:
             return self[key]
         except KeyError:
             return default
+# # code fot tsting
+#
+#
+#
 # md = MultiRegexDict()
 # md["A"]["B"]["C"] = 123
 # md["A"]["B"][re.compile("ABC\:(\d+)")] = 100
