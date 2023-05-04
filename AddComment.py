@@ -1,95 +1,11 @@
 import re
+from optparse import OptionParser
+
 from lpp import Ddict
 import fitz,os,filetype,argparse,subprocess
 from ParseConfig import AnnotationHashLoad
 BLUE_COLOR = (1,0,0)
 border = {"width": 2}
-
-# def build_range(rangeval:str):
-#     """
-#     Build the range of pages based on the parameter inputted rangeval
-#     """
-#     result=set()
-#     for part in rangeval.split(','):
-#         x=part.split('-')
-#         result.update(range(int(x[0]),int(x[-1])+1))
-#     return list(sorted(result))
-
-# def Get_all_kv_pairs(hash_map, prefix=None):
-#     if prefix is None:
-#         prefix = []
-#     kv_pairs = []
-#     for key, value in hash_map.items():
-#         if isinstance(value, dict):
-#             kv_pairs.extend(Get_all_kv_pairs(value, prefix + [key]))
-#         else:
-#             kv_pairs.append((prefix + [key], value))
-#     return kv_pairs
-
-
-
-# def comment_pdf(input_file:str
-#               , search_text:str
-#               , comment_title:str
-#               , comment_info:str
-#               , output_file:str
-#               , pages:list=None
-#               ):
-#     """
-#     Search for a particular string value in a PDF file and add comments to it.
-#     """
-#     pdfIn = fitz.open(input_file)
-#     found_matches = 0
-#     # Iterate throughout the document pages
-#     for pg,page in enumerate(pdfIn):
-#         pageID = pg+1
-#         # If required for specific pages
-#         if pages:
-#            if pageID not in pages:
-#               continue
-#
-#         # Use the search for function to find the text
-#         matched_values = page.search_for(search_text,hit_max=20)
-#         found_matches += len(matched_values) if matched_values else 0
-#
-#         #Loop through the matches values
-#         #item will contain the coordinates of the found text
-#         for item in matched_values:
-#             # Enclose the found text with a bounding box
-#             # print( dir( page ) )
-#             print("Coords is !!")
-#             print(item)
-#             # annot= page.add_freetext_annot( item,"Fuck!!!!!",border_color=BLUE_COLOR )
-#             annot = page.add_rect_annot(item)
-#             annot.set_border({"dashes":[1],"width":2,"color":BLUE_COLOR})
-#             annot.set_colors({"stroke":BLUE_COLOR})
-#             page.add_text_annot( (200 , 200) , "Fuck Xijinping!!" )
-#             # Add comment to the found match
-#             info = annot.info
-#             info["title"]   = comment_title
-#             info["content"] = comment_info
-#             info["subject"] = "Educative subject"
-#             annot.set_info(info)
-#
-#             annot.update(border_color=BLUE_COLOR)
-#
-#     #Save to output file
-#     pdfIn.save(output_file,garbage=3,deflate=True)
-#     pdfIn.close()
-#
-#     #Process Summary
-#     summary = {
-#          "Input File": input_file
-#        , "Matching Instances": found_matches
-#        , "Output File": output_file
-#        , "Comment Title": comment_title
-#        , "Comment Info":  comment_info
-#     }
-#
-#     # Print process Summary
-#     print("## Summary ########################################################")
-#     print("\n".join("{}:{}".format(i, j) for i, j in summary.items()))
-#     print("###################################################################")
 
 def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
     endhash = Ddict()
@@ -231,13 +147,24 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
     pdfIn.save(output_file_name, garbage=3, deflate=True)
     pdfIn.close()
 if __name__ == "__main__":
-    # Data_Hash = AnnotationHashLoad( "Config.json" )
+    usage = "python3 %prog [options]"
+    parser = OptionParser(usage=usage)
+    parser.add_option("-p", "--PDF", action="store",
+                      dest="Pdf",
 
-    #
-    # # #Downloading input file
-    # # subprocess.call(['cp'
-    # #               , os.path.join('./static',input_file_name)
-    # #               , os.path.join('/usercode/output',input_file_name)
-    # #                ])
-    AddAnnotation( 'see.pdf','Out.pdf',"see.json"  )
+                      help="Input PDF File")
+
+    parser.add_option("-j", "--Json", action="store",
+                      dest="Json",
+
+                      help="Json File Describe Annotation Template!!")
+    parser.add_option("-o", "--Output", action="store",
+                      dest="Output",
+
+                      help="Pdf Output File for Annotationed PDF!!")
+    (options, args) = parser.parse_args()
+    Pdf = options.Pdf
+    Json = options.Json
+    Output  = options.Output
+    AddAnnotation( Pdf,Output,Json  )
 
