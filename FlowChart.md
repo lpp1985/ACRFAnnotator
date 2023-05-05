@@ -34,5 +34,121 @@ The genesis of SDTM production lies in the annotation of vacant CRF pages, which
 
 # WROKFLOW AND PROCESS
 
+## Data Structure for storing data
+
+First of all, we design a specific data structure to store the parsing result of blank CRF PDF file. Our ultimate goal is to create a self-expandable infinite-dimensional hash table that can perform regular expression fuzzy matching.
 
 
+
+```python
+import re
+from collections import defaultdict
+class MultiRegexDict:
+
+    def __init__(self):  
+        
+        ## Recursive implementation of an infinite dimensional dictionary.
+        
+        self._data = defaultdict(MultiRegexDict)
+        
+        
+    def __getitem__(self, key):
+    if key in self._data :
+        return self._data[key]
+    else:
+        if isinstance(key, str):
+            for k in self._data:
+                if isinstance(k,re.Pattern):
+                    
+                     ### Let the dictionary support regular expression.
+                        
+                    if k.findall( key ):
+                        if isinstance(self._data[k],str):
+                            if self._data[k].startswith("re#"):
+                                return k.sub( self._data[k].replace("re#",""),key)
+                            else:
+                                return self._data[k]
+                        else:
+
+                            return self._data[k]
+```
+
+After testing, we could clearly find we fulfill out envisioning that the MultiRegexDict class supports automatic self-expandable and   regular expression fuzzy matching.
+
+```python
+# # code fot tsting
+
+# data assignment for preparing
+
+md = MultiRegexDict()
+md["T1"]["T2.1"]["T3.1"] = "123"
+
+md["T1"]["T2.2"]["T3.2"] = "456"
+
+md["T1"]["T2.2"]["T3.3"] = "789"
+
+md["T1.1"] = "abc"
+md["T1.3"]["T2.3"][re.compile("Qs\:(.+)")] = "re#Term=\\1"
+print(md)
+
+#The Output is:
+
+{'T1.3':
+ 	{'T2.3': 
+  		{<_sre.SRE_Pattern object at 0x7fb51c9b3c60>: ' re#Term=\\1 '}	
+  	}, 
+ 'T1.1':'abc', 
+ 'T1': 
+ 	{'T2.1':
+    	{'T3.1': '123'}, 
+     'T2.2': 
+     	{'T3.3': '789', 
+         'T3.2': '456'
+         }
+    }
+}
+
+# code for testing
+
+
+md["T1"]["T2.2"]["T3.2"]
+
+#The Output is: '456'
+
+
+
+
+'''  The  Following test is for regular expression matching'''
+
+md["T1.3"]["T2.3"]["Qs:After Treat"] 
+
+#The Output is:  'Term=After Treat'
+
+
+
+```
+
+## workflow
+
+Based on the ***MultiRegexDict*** class, we design an automatic workflow for CRF annotating.The whole process consists of 3 steps , and a series of python scripts have written to fulfill the function.
+
+1. e
+
+2. 
+
+```mermaid
+flowchart TD;
+    A[("Blank CRF PDF File")]
+    A--GenerateJson.py-->B(Blank Json)
+    F[/"Company SDTM 
+    aCRF standard"/]-->
+  	 E[["Edit"]]
+    B-->E
+    G(Annotated Json)
+    E-->G
+    G====>D[["AddComment.py"]]
+    A====>D
+    D-->V("Annotated CRF PDF File");
+```
+
+​                                                      **Flow Chart of Whole workflow**
