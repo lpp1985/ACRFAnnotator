@@ -5,10 +5,10 @@ from optparse import OptionParser
 from lpp import Ddict
 import fitz,os,filetype,argparse,subprocess
 from ParseConfig import AnnotationHashLoad
-BLUE_COLOR = (1,0,0)
+BLUE_COLOR = (0,0,0)
 border = {"width": 2}
 textcolor=(0,0,0)
-color = (0, 0.7, 0.8)
+color = (0.94118, 1,0.94118)
 def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
     endhash = Ddict()
     Data_Hash = AnnotationHashLoad(jsonfile)
@@ -41,12 +41,13 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
 
 
                             if isinstance(Data_Hash[f1],str) and len(Data_Hash[f1])>0 :
-                                coord = [s['bbox'][0], s['bbox'][1] - 420, s['bbox'][2], s['bbox'][1] - 20]
+                                coord = [s['bbox'][0], s['bbox'][1] - 20, s['bbox'][2], s['bbox'][1] - 20]
 
-                                coord[1] = coord[1] - 8 *len( Data_Hash[f1]  )
+                                coord[1] = coord[1] - 7 *len( Data_Hash[f1]  )
+                                print( Data_Hash[f1]  )
 
                                 annot = page.add_freetext_annot(coord, Data_Hash[f1], 8, border_color=BLUE_COLOR,
-                                                                rotate=90,fill_color   = color,align = 1 )
+                                                                rotate=90,fill_color   = color,align = 1)
                                 #annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
                                 #annot.update(border_color=BLUE_COLOR)
 
