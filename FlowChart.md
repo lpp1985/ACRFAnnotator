@@ -39,7 +39,7 @@ The genesis of SDTM production lies in the annotation of vacant CRF pages, which
 First of all, we design a specific data structure to store the parsing result of blank CRF PDF file. Our ultimate goal is to create a self-expandable infinite-dimensional hash table that can perform regular expression fuzzy matching we package this data structure as a class named **MultiRegexDict**. After testing, we could clearly find we fulfill the envisioning that the **MultiRegexDict** class supports automatic self-expandable and   regular expression fuzzy matching.
 
 ```python
-# # code fot tsting
+# # code for tsting
 
 # data assignment for preparing
 
@@ -173,13 +173,13 @@ After adding the annotation information into blank Json file and  finally got An
 
 ### ADD BOOKMARKS  
 
-Although bookmarks at corresponding pages in the annotated CRF file is recommend in the Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF Reader have already automatic generating bookmarks on comment to TOC .  
+Although adding bookmarks at corresponding pages in the annotated CRF file is recommend in the Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF Reader have already automatic generating bookmarks on comment to TOC .  
 
 ![BookMark](./BookMark.png)
 
 # Program Excution
 
-All Python scripts are saved as .py files and have CLI（Command Line Interface）.
+All Python scripts are saved as .py files and have CLI（Command Line Interface）to run.
 
 ## Installation
 
@@ -193,11 +193,11 @@ pip install -r requirements.txt
 
 ~~~bash
 ```
-python3 GenerateJson.py  -p blank.pdf -o Annotation.json   
+python3 GenerateJson.py  -p blank.pdf -o Blank.json   
 ```
 ~~~
 
-Then edit the *Annotation.json* by **HbuilderX** or Other editor!!
+Then edit the *Blank.json* by **HbuilderX** or Other editor!!
 
 ## Generate annotated CRF PDF
 
@@ -214,9 +214,44 @@ python3 AddComment.py  -p blank.pdf -j Annotation.json -o Annotated.pdf
 
 or Just use a GUI to manipulate the whole process.
 
-
-
 ![GUI](./GUI.png)
+
+# Advanced skills
+
+# Annotation Migration
+
+In the event of multiple versions of annotations, the prioritization and merging of one version with others or the migration of old version annotations due to formatting or sequencing changes in the input PDF document can be accomplished through the use of the **Update** function. This allows for the achievement of our intended goals with one-line script.
+
+```python
+import json 
+primary_version = "primary_version.json"
+blank_version = "blank.json"
+blank_json = json.load(open(blank_version   ))
+# Load annotationed version in time order
+for each_file in[ "ver1.json","ver1.1.json","version2.json"     ]:
+    blank_version = blank_version.update( json.load(open( each_file   ))   )
+    
+    
+#Importing data with the highest priority 
+
+final_version = blank_version.update( json.load(open( primary_version   ))   )
+
+final_version.dump( "FinalVersion.json"  )
+
+```
+
+and then run the bash command to get the result:
+
+```bash
+python3 AddComment.py  -p blank.pdf -j FinalVersion.json -o Annotated.pdf
+
+```
+
+## Divide-and-Conquer
+
+
+
+
 
 # Appendix
 
