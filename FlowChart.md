@@ -73,7 +73,7 @@ class MultiRegexDict:
                             return self._data[k]
 ```
 
-After testing, we could clearly find we fulfill out envisioning that the MultiRegexDict class supports automatic self-expandable and   regular expression fuzzy matching.
+After testing, we could clearly find we fulfill the envisioning that the **MultiRegexDict** class supports automatic self-expandable and   regular expression fuzzy matching.
 
 ```python
 # # code fot tsting
@@ -132,9 +132,10 @@ md["T1.3"]["T2.3"]["Qs:After Treat"]
 
 Based on the ***MultiRegexDict*** class, we design an automatic workflow for CRF annotating.The whole process consists of 3 steps , and a series of python scripts have written to fulfill the function.
 
-1. e
+1. Parsing PDF file  and map corresponding Heading to **MultiRegexDict**    class and  dump it into a Json file.
 
-2. 
+2. Edit the Json file and add annotation in Json.
+3. Map back the Annotated Json to Blank CRF PDF file to generate Annotated PDF File.
 
 ```mermaid
 flowchart TD;
@@ -142,7 +143,7 @@ flowchart TD;
     A--GenerateJson.py-->B(Blank Json)
     F[/"Company SDTM 
     aCRF standard"/]-->
-  	 E[["Edit"]]
+  	 E[["Manual Edit"]]
     B-->E
     G(Annotated Json)
     E-->G
@@ -151,4 +152,117 @@ flowchart TD;
     D-->V("Annotated CRF PDF File");
 ```
 
-​                                                      **Flow Chart of Whole workflow**
+​                                                                                                      **Flow Chart of Whole workflow**
+
+### Parse an Extract Content Structure into JSON
+
+ When you submit a CRF PDF, the initial software comes in handy as it enables the extraction of all the relevant information from the aCRF. This includes the text content, placement, fonts, as well as text coordinates. You can provide the program with a pre-established regular expression or a predefined config file in order to facilitate the identification and differentiation between the text categories such as titles, form names, or general content. By relying on the established rules, the software is able to capture the relevant data and then collate it using a python **MultiRegexDict**  class in a hierarchical fashion by concatenating the form names, variable names, and annotations. Using such a structured approach means that data is easily organized and can be retrieved quickly when needed. 
+
+![ParsingPDF](./ParsingPDF.png)
+
+### Edit JSON Add Annotation
+
+![AnnotatedPDF](./AnnotatedPDF.png)
+
+
+
+Use the Editor support json format to edit Json file and add value attribute on the text you want to annotate. The content being edited is highlighted in the red box as shown in the figure above. If the attribute start with **compile#** and **re#**, that means the regular expression for matching and output.
+
+### Output Annotated PDF
+
+After adding the annotation information into blank Json file and  finally got Annotated Json File. Just fetch it to the program, the program will automatically decode the json file and map back to a   **MultiRegexDict**  class encoded in python. We implement a simple algorithmic approach to the task of text annotation, whereby we juxtapose the output of the parsed key list against the **MultiRegexDict** object, a highly sophisticated hash-based data structure with built-in support for string-matching based mapping and regular expression-based fuzzy searching. In cases where the mapped value corresponds to a string, said textual data is promptly inscribed adjacent to the point of its detection within the analyzed text.
+
+```python
+ for b in blocks:
+            for l in b['lines']:
+                for s in l["spans"]:
+                    
+                    
+                    ##############
+                    ##   Extract Level1 title( FormName )
+                    ##############
+                    
+                    
+                    if "Bold" in s['font'] and s['size'] > 9:
+                        text = s['text']
+                        if name_prefix.search(text):
+
+                            f1 = name_prefix.search(text).group(1)
+                            ###
+							# If find $FormName then Start to key mapping in  MultiRegexDict  Class
+                            ###
+                            record_status = True
+
+							##
+                            #Assessing if a given text segment qualifies as a Level 1 title, and if so, appending corresponding annotations.
+                            ##
+                            if isinstance(Data_Hash[f1],str) and len(Data_Hash[f1])>0 :
+                                coord = [s['bbox'][0], s['bbox'][1] - 420, s['bbox'][2], s['bbox'][1] - 20]
+
+                                coord[1] = coord[1] - 8 *len( Data_Hash[f1]  )
+
+                                annot = page.add_freetext_annot(coord, Data_Hash[f1], 8, border_color=BLUE_COLOR,
+                                                                rotate=90,fill_color   = color,align = 1 )
+
+                        else:
+                            record_status = False
+                            
+                    ##
+                    # Extract Level2 title and assessing if there some annotation should add to this title
+                    ##
+                    elif "Bold" in s['font'] and s['size'] > 6:
+                        if not record_status:
+                            continue
+                        text = s['text']
+                        if name_prefix.search(text):
+                            left_coord = s['bbox'][3]
+                            title = name_prefix.search(text).group(1)
+                            if left_coord > 1000:
+                                f2 = title
+
+                                if f1 in Data_Hash and f2 in Data_Hash[f1] and  isinstance(Data_Hash[f1][f2], str) and len(Data_Hash[f1][f2]) > 0:
+                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
+                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2])
+                                    annot = page.add_freetext_annot(coord, Data_Hash[f1][f2], 8, border_color=BLUE_COLOR,
+                                                                    rotate=90,fill_color  = color,align = 1 )
+
+
+							###
+                            #	Level 3 Title matching
+                            ###
+                            elif left_coord > 750:
+                                f3 = title
+
+                            if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and isinstance(Data_Hash[f1][f2][f3], str) and len(Data_Hash[f1][f2][f3]) > 0:
+                                coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
+                                coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3])
+                                annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3], 8, border_color=BLUE_COLOR,
+                                                                rotate=90,fill_color  = color,align = 1 )
+                                # annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
+                                # annot.update(border_color=BLUE_COLOR)
+						###
+                        #	Level 4 Title matching
+                        ###
+                        elif left_coord > 700:
+                            f4 = title
+                            # print(f4, left_coord)
+
+                            if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and f4 in Data_Hash[f1][f2][f3] and isinstance(Data_Hash[f1][f2][f3][f4], str) and len(Data_Hash[f1][f2][f3][f4]) > 0:
+
+                                Data_Hash[f1][f2][f3][f4]
+                                coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
+                                coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3][f4])
+                                annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3][f4], 8, border_color=BLUE_COLOR,
+                                                                rotate=90,fill_color  = color ,align = 1  )
+
+                                    
+```
+
+
+
+### ADD BOOKMARKS  
+
+Although bookmarks at corresponding pages in the annotated CRF file is recommend inthe Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF reader have already automatic generate bookmarks to TOC for  annotated  format
+
+
+
