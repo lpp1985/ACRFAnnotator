@@ -13,7 +13,7 @@ python3 GenerateJson.py  -p blank.pdf -o Annotation.json
    
 
 ```
-Then edit the Annotation.json by Hbuilder or Other editor!!
+Then edit the Annotation.json by HbuilderX or Other editor!!
 Then generated the annotated.pdf by following command:
 ```bash
 python3 AddComment.py  -p blank.pdf -j Annotation.json -o Annotated.pdf
