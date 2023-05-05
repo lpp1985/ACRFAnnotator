@@ -7,7 +7,7 @@ import fitz,os,filetype,argparse,subprocess
 from ParseConfig import AnnotationHashLoad
 BLUE_COLOR = (1,0,0)
 border = {"width": 2}
-textcolor=(1,1,1)
+textcolor=(0,0,0)
 color = (0, 0.7, 0.8)
 def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
     endhash = Ddict()

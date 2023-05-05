@@ -36,44 +36,7 @@ The genesis of SDTM production lies in the annotation of vacant CRF pages, which
 
 ## Data Structure for storing data
 
-First of all, we design a specific data structure to store the parsing result of blank CRF PDF file. Our ultimate goal is to create a self-expandable infinite-dimensional hash table that can perform regular expression fuzzy matching.
-
-
-
-```python
-import re
-from collections import defaultdict
-class MultiRegexDict:
-
-    def __init__(self):  
-        
-        ## Recursive implementation of an infinite dimensional dictionary.
-        
-        self._data = defaultdict(MultiRegexDict)
-        
-        
-    def __getitem__(self, key):
-    if key in self._data :
-        return self._data[key]
-    else:
-        if isinstance(key, str):
-            for k in self._data:
-                if isinstance(k,re.Pattern):
-                    
-                     ### Let the dictionary support regular expression.
-                        
-                    if k.findall( key ):
-                        if isinstance(self._data[k],str):
-                            if self._data[k].startswith("re#"):
-                                return k.sub( self._data[k].replace("re#",""),key)
-                            else:
-                                return self._data[k]
-                        else:
-
-                            return self._data[k]
-```
-
-After testing, we could clearly find we fulfill the envisioning that the **MultiRegexDict** class supports automatic self-expandable and   regular expression fuzzy matching.
+First of all, we design a specific data structure to store the parsing result of blank CRF PDF file. Our ultimate goal is to create a self-expandable infinite-dimensional hash table that can perform regular expression fuzzy matching we package this data structure as a class named **MultiRegexDict**. After testing, we could clearly find we fulfill the envisioning that the **MultiRegexDict** class supports automatic self-expandable and   regular expression fuzzy matching.
 
 ```python
 # # code fot tsting
@@ -176,76 +139,24 @@ After adding the annotation information into blank Json file and  finally got An
  for b in blocks:
             for l in b['lines']:
                 for s in l["spans"]:
-                    
-                    
-                    ##############
-                    ##   Extract Level1 title( FormName )
-                    ##############
-                    
-                    
-                    if "Bold" in s['font'] and s['size'] > 9:
-                        text = s['text']
-                        if name_prefix.search(text):
-
-                            f1 = name_prefix.search(text).group(1)
-                            ###
-							# If find $FormName then Start to key mapping in  MultiRegexDict  Class
-                            ###
-                            record_status = True
-
-							##
-                            #Assessing if a given text segment qualifies as a Level 1 title, and if so, appending corresponding annotations.
-                            ##
-                            if isinstance(Data_Hash[f1],str) and len(Data_Hash[f1])>0 :
-                                coord = [s['bbox'][0], s['bbox'][1] - 420, s['bbox'][2], s['bbox'][1] - 20]
-
-                                coord[1] = coord[1] - 8 *len( Data_Hash[f1]  )
-
-                                annot = page.add_freetext_annot(coord, Data_Hash[f1], 8, border_color=BLUE_COLOR,
-                                                                rotate=90,fill_color   = color,align = 1 )
-
-                        else:
-                            record_status = False
-                            
-                    ##
-                    # Extract Level2 title and assessing if there some annotation should add to this title
-                    ##
-                    elif "Bold" in s['font'] and s['size'] > 6:
-                        if not record_status:
-                            continue
-                        text = s['text']
-                        if name_prefix.search(text):
-                            left_coord = s['bbox'][3]
-                            title = name_prefix.search(text).group(1)
-                            if left_coord > 1000:
-                                f2 = title
-
-                                if f1 in Data_Hash and f2 in Data_Hash[f1] and  isinstance(Data_Hash[f1][f2], str) and len(Data_Hash[f1][f2]) > 0:
-                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
-                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2])
-                                    annot = page.add_freetext_annot(coord, Data_Hash[f1][f2], 8, border_color=BLUE_COLOR,
-                                                                    rotate=90,fill_color  = color,align = 1 )
-
-
 							###
                             #	Level 3 Title matching
                             ###
                             elif left_coord > 750:
                                 f3 = title
-
+							# Assessing the value of mapping result is string. If so output it as  Comment
                             if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and isinstance(Data_Hash[f1][f2][f3], str) and len(Data_Hash[f1][f2][f3]) > 0:
+                                
                                 coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
                                 coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3])
                                 annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3], 8, border_color=BLUE_COLOR,
                                                                 rotate=90,fill_color  = color,align = 1 )
-                                # annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
-                                # annot.update(border_color=BLUE_COLOR)
+
 						###
                         #	Level 4 Title matching
                         ###
                         elif left_coord > 700:
                             f4 = title
-                            # print(f4, left_coord)
 
                             if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and f4 in Data_Hash[f1][f2][f3] and isinstance(Data_Hash[f1][f2][f3][f4], str) and len(Data_Hash[f1][f2][f3][f4]) > 0:
 
@@ -262,7 +173,93 @@ After adding the annotation information into blank Json file and  finally got An
 
 ### ADD BOOKMARKS  
 
-Although bookmarks at corresponding pages in the annotated CRF file is recommend inthe Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF reader have already automatic generate bookmarks to TOC for  annotated  format
+Although bookmarks at corresponding pages in the annotated CRF file is recommend in the Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF Reader have already automatic generating bookmarks on comment to TOC .  
+
+![BookMark](./BookMark.png)
+
+# Program Excution
+
+All Python scripts are saved as .py files and have CLI（Command Line Interface）.
+
+## Installation
+
+~~~bash
+```
+pip install -r requirements.txt
+```
+~~~
+
+## Parse and extract infomation from PDF file
+
+~~~bash
+```
+python3 GenerateJson.py  -p blank.pdf -o Annotation.json   
+```
+~~~
+
+Then edit the *Annotation.json* by **HbuilderX** or Other editor!!
+
+## Generate annotated CRF PDF
+
+
+
+After that , we could generated the annotated.pdf by following command:
+
+~~~bash
+```
+python3 AddComment.py  -p blank.pdf -j Annotation.json -o Annotated.pdf
+
+```
+~~~
+
+or Just use a GUI to manipulate the whole process.
+
+
+
+![GUI](./GUI.png)
+
+# Appendix
+
+## Data structure to store parsing PDF infomation
+
+We just recursively utilizing a dictionary to package dictionary to fulfill the function of self-expandable multiple dimension hash and make some modificaion on ***\_\_getitem__***  method to achieve regex fuzzing matching function
+
+
+
+```python
+import re
+from collections import defaultdict
+class MultiRegexDict:
+
+    def __init__(self):  
+        
+        ## Recursive implementation of an infinite dimensional dictionary.
+        
+        self._data = defaultdict(MultiRegexDict)
+        
+        
+    def __getitem__(self, key):
+    if key in self._data :
+        return self._data[key]
+    else:
+        if isinstance(key, str):
+            for k in self._data:
+                if isinstance(k,re.Pattern):
+                    
+                     ### Let the dictionary support regular expression.
+                        
+                    if k.findall( key ):
+                        if isinstance(self._data[k],str):
+                            if self._data[k].startswith("re#"):
+                                return k.sub( self._data[k].replace("re#",""),key)
+                            else:
+                                return self._data[k]
+                        else:
+
+                            return self._data[k]
+```
+
+
 
 
 
