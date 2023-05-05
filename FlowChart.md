@@ -39,7 +39,7 @@ The genesis of SDTM production lies in the annotation of vacant CRF pages, which
 First of all, we design a specific data structure to store the parsing result of blank CRF PDF file. Our ultimate goal is to create a self-expandable infinite-dimensional hash table that can perform regular expression fuzzy matching we package this data structure as a class named **MultiRegexDict**. After testing, we could clearly find we fulfill the envisioning that the **MultiRegexDict** class supports automatic self-expandable and   regular expression fuzzy matching.
 
 ```python
-# # code for tsting
+# # code for testing
 
 # data assignment for preparing
 
@@ -247,9 +247,113 @@ python3 AddComment.py  -p blank.pdf -j FinalVersion.json -o Annotated.pdf
 
 ```
 
+```mermaid
+flowchart TD;
+    A[("Blank CRF PDF File")]
+    A--GenerateJson.py-->B(Blank Json)
+    F[("Other Annotated Json")]-->
+  	 E[["Update"]]
+    B-->E
+    G(Annotated Json)
+    E-->G
+    G====>D[["AddComment.py"]]
+    A====>D
+    D-->V("Annotated CRF PDF File");
+```
+
+
+
+
+
+
+
 ## Divide-and-Conquer
 
+Adding comments and annotations to a CRF document is a complex and laborious process for companies as these documents typically span hundreds of pages.The current methods for adding comments and annotations to CRF documents are limited to factors such as page numbers, resulting in low efficiency as this work is often assigned to only one person who is responsible for completing it. Using multiple dimension hash packaged Json class obviously obviously overcome this limit because it relies solely on the structure of the tables which is totally independ with page numbers. This implies that by carefully segmenting the document at the H1 caption in the form, we can achieve a seamless partitioning of the document. This way, different sections of the document can be allocated to different team members, who can collaborate effectively by leveraging various collaborative tools such as Github, GitLAB, mailing lists, Resilio Sync, etc. Each team member takes responsibility for ensuring the accuracy of their respective document annotations. Finally, the administrator can merge all contributions to arrive at the final output. 
 
+```mermaid
+flowchart TD;
+    A[("Blank CRF PDF File")]
+    M[("Part1 PDF File")]
+    N[("Part2 PDF File")]
+
+
+    A-->O[["Seperate"]]
+    O --> M & N 
+    M1(Part1 Annotated Json)
+    N1(Part2 Annotated Json)
+
+
+    M--GenerateJson.py+ManualEdit-->M1
+    N--GenerateJson.py+ManualEdit-->N1
+
+
+
+    A--GenerateJson.py-->B(Blank Json)
+    N1-->E
+    M1-->E
+
+
+  	E[["Update"]]
+    B-->E
+    G(Annotated Json)
+    E-->G
+    G====>D[["AddComment.py"]]
+    A====>D
+    D-->V("Annotated CRF PDF File");
+```
+
+```python
+import json
+blank_json = jon.load("blank.json")
+print( blank_json )
+#Output is
+{	'Table1': {
+    	'Section1': {
+        	'Complete': '', 
+        	'InComplete': '', 
+        	'Bitrh': ''
+			    }
+			}, 
+ 	'Table2': {
+        	'Section2': {
+                	'Emerency': ''
+            	}, 
+        	'Section1': {
+                	'Death': ''
+            			}
+    			}
+}
+
+part1_json = jon.load("part1.json")
+print( part1_json)
+#Output is 
+ {'Table1': 
+  	{'Section1': 
+     	{'Complete': 'Term=Complete', 
+         'InComplete': 'Term=InComplete', 
+         'Bitrh': 'Term=Bitrh'
+        }
+    }, 
+  }
+
+part2_json = jon.load("part2.json")
+print( part2_json)    
+#Output is   
+{'Table2': 
+ 	{'Section1': 
+     	{'Death': 'Disterm=Death'}, 
+     'Section2': {'Emerency': 'Disterm=Emerency'}
+    }
+}    
+blank_json.update(part1_json )
+blank_json.update(part2_json )
+final_version = blank_json
+print( final_version)
+#output is
+{'Table1': {'Section1': {'Complete': 'Term=Complete', 'InComplete': 'Term=InComplete', 'Bitrh': 'Term=Bitrh'}}, 'Table2': {'Section1': {'Death': 'Disterm=Death'}, 'Section2': {'Emerency': 'Disterm=Emerency'}}}
+
+```
 
 
 
@@ -274,22 +378,22 @@ class MultiRegexDict:
         
         
     def __getitem__(self, key):
-    if key in self._data :
-        return self._data[key]
-    else:
-        if isinstance(key, str):
-            for k in self._data:
-                if isinstance(k,re.Pattern):
-                    
-                     ### Let the dictionary support regular expression.
-                        
-                    if k.findall( key ):
-                        if isinstance(self._data[k],str):
-                            if self._data[k].startswith("re#"):
-                                return k.sub( self._data[k].replace("re#",""),key)
+        if key in self._data :
+            return self._data[key]
+        else:
+            if isinstance(key, str):
+                for k in self._data:
+                    if isinstance(k,re.Pattern):
+
+                         ### Let the dictionary support regular expression.
+
+                        if k.findall( key ):
+                            if isinstance(self._data[k],str):
+                                if self._data[k].startswith("re#"):
+                                    return k.sub( self._data[k].replace("re#",""),key)
+                                else:
+                                    return self._data[k]
                             else:
-                                return self._data[k]
-                        else:
 
                             return self._data[k]
 ```
