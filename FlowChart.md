@@ -106,7 +106,7 @@ flowchart TD;
 
 ### Parse an Extract Content Structure into JSON
 
- When you submit a CRF PDF, the initial software comes in handy as it enables the extraction of all the relevant information from the aCRF. This includes the text content, placement, fonts, as well as text coordinates. You can provide the program with a pre-established regular expression or a predefined config file in order to facilitate the identification and differentiation between the text categories such as titles, form names, or general content. By relying on the established rules, the software is able to capture the relevant data and then collate it using a python **MultiRegexDict**  class in a hierarchical fashion by concatenating the form names, variable names, and annotations. Using such a structured approach means that data is easily organized and can be retrieved quickly when needed. 
+ When you submit a CRF PDF, the initial software comes in handy as it enables the extraction of all the relevant information from the aCRF. This includes the text content, placement, fonts, as well as text coordinates. You can provide the program with a pre-established regular expression or a predefined config file in order to facilitate the identification and differentiation between the text categories such as titles, form names, or general content. By relying on the established rules, the software is able to capture the relevant data and then collate it using a python **MultiRegexDict**  class in a hierarchical fashion by concatenating the form names, variable names, and annotations. In the case where the user has not provided any configuration information, the program will conduct a line-by-line scan of the text blocks present on the page, and subsequently sort them based on their horizontal coordinates. It will then proceed to hierarchical dump these objects into relevant data structures as key on different level. Using such a structured approach means that data is easily organized and can be retrieved quickly when needed. 
 
 ![ParsingPDF](./ParsingPDF.png)
 
@@ -158,7 +158,7 @@ After adding the annotation information into blank Json file and  finally got An
 
 
 
-### ADD BOOKMARKS  
+### Adding Bookmarks  
 
 Although adding bookmarks at corresponding pages in the annotated CRF file is recommend in the Clinical Data Interchange Standards Consortium (CDISC) guidelines, for most case, it is unnecessary to add bookmarks because the PDF Reader have already automatic generating bookmarks on comment to TOC .  
 
@@ -207,7 +207,7 @@ or Just use a GUI to manipulate the whole process.
 
 # Annotation Migration
 
-In the event of multiple versions of annotations, the prioritization and merging of one version with others or the migration of old version annotations due to formatting or sequencing changes in the input PDF document can be accomplished through the use of the **Update** function. This allows for the achievement of our intended goals with one-line script.
+In the event of multiple versions of annotations, merging of one prioritized version with others or the migration of old version‘s annotations  to new PDF file due to formatting or sequencing changes in the input PDF document can be accomplished through the use of the **Update** function. This allows for the achievement of our intended goals with one-line script.
 
 ```python
 import json 
