@@ -5,8 +5,20 @@ class MultiRegexDict(defaultdict):
         super().__init__(MultiRegexDict)
         self._data = set() # a set for each dimension
     def __getitem__(self, key):
-        return super().__getitem__(key)
+        if key in self:
 
+            return super().__getitem__(key) # return a dict object
+        elif  isinstance(key, str):
+            for k in self:
+                if isinstance(k, re.Pattern):
+                    if k.findall(key):
+                        return self[k]
+            else:
+                return super().__getitem__(key)
+
+
+        else:
+            return super().__getitem__(key)
     def __setitem__(self, key, value):
         if isinstance(value, str):
             # print("Data is "+value)
@@ -26,9 +38,14 @@ class MultiRegexDict(defaultdict):
 x = MultiRegexDict()
 
 # x["a"]["B"]
-x["a"]["B"] = "hello"
+x["aa"]["B"] = "hello"
 x["a"]["B"]["D"] = ["world","", "python"]
 x["a"]["B"]["D"] ="Data"
+
+x["a"]["B"][re.compile("\d+")] = ["world111","", "python"]
 # print( x["a"]["B"] )
 print(x["a"]["B"]["D"].data())
 print( x["a"]["B"].data() )
+print(x["a"]["B"]["1"]["2"])
+print(x["a"]["B"]["1"].data())
+
