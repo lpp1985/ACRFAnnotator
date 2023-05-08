@@ -69,4 +69,5 @@ x["a"]["B"][re.compile("\d+")] = ["world111", "", "python"]
 # print( x["a"]["B"] )
 # print(x["a"]["B"]["D"].data())
 print(x["a"]["B"]._regex,x["a"]["B"]["1"].k)
+
 print(x["a"]["B"]["1"]._regex,x["a"]["B"]["1"].k)
