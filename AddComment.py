@@ -41,10 +41,9 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
 
 
                             if isinstance(Data_Hash[f1],str) and len(Data_Hash[f1])>0 :
-                                coord = [s['bbox'][0], s['bbox'][1] - 20, s['bbox'][2], s['bbox'][1] - 20]
-
+                                coord = [s['bbox'][0], s['bbox'][1] - 20, s['bbox'][2], s['bbox'][1]]
                                 coord[1] = coord[1] - 7 *len( Data_Hash[f1]  )
-                                print( Data_Hash[f1]  )
+                                # print( Data_Hash[f1]  )
 
                                 annot = page.add_freetext_annot(coord, Data_Hash[f1], 8, border_color=BLUE_COLOR,
                                                                 rotate=90,fill_color   = color,align = 1)
@@ -64,8 +63,8 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
                                 f2 = title
 
                                 if f1 in Data_Hash and f2 in Data_Hash[f1] and  isinstance(Data_Hash[f1][f2], str) and len(Data_Hash[f1][f2]) > 0:
-                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
-                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2])
+                                    coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
+                                    coord[1] = coord[1] - 7 *len(Data_Hash[f1][f2])
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2], 8, border_color=BLUE_COLOR,
                                                                     rotate=90,fill_color  = color,align = 1 )
                                     # annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
@@ -76,8 +75,8 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
                                 f3 = title
 
                                 if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and isinstance(Data_Hash[f1][f2][f3], str) and len(Data_Hash[f1][f2][f3]) > 0:
-                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
-                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3])
+                                    coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
+                                    coord[1] = coord[1] - 7 *len(Data_Hash[f1][f2][f3])
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3], 8, border_color=BLUE_COLOR,
                                                                     rotate=90,fill_color  = color,align = 1 )
                                     # annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
@@ -90,8 +89,8 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
                                 if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2] and f4 in Data_Hash[f1][f2][f3] and isinstance(Data_Hash[f1][f2][f3][f4], str) and len(Data_Hash[f1][f2][f3][f4]) > 0:
 
                                     Data_Hash[f1][f2][f3][f4]
-                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
-                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3][f4])
+                                    coord = coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
+                                    coord[1] = coord[1] - 7 *len(Data_Hash[f1][f2][f3][f4])
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3][f4], 8, border_color=BLUE_COLOR,
                                                                     rotate=90,fill_color  = color ,align = 1  )
                                     # annot.set_border({"dashes": [1], "width": 1, "color": BLUE_COLOR})
@@ -109,8 +108,8 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
 
 
                                 if isinstance(Data_Hash[f1][f2][content], str) and len(Data_Hash[f1][f2][content]) > 0:
-                                    coord = [s['bbox'][0], s['bbox'][1] - 150, s['bbox'][2], s['bbox'][1] - 20]
-                                    coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][content])
+                                    coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
+                                    coord[1] = coord[1] - 7 *len(Data_Hash[f1][f2][content])
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][content], 8,
                                                                     border_color=BLUE_COLOR,
                                                                     rotate=90,fill_color  = color,align = 1 )
@@ -124,8 +123,9 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
                                 # if f3 =="lstDRUGCOMP":
                                 #     print( Data_Hash[f1][f2][f3][content] )
                                 if f1 in Data_Hash and f2 in Data_Hash[f1] and f3 in Data_Hash[f1][f2]  and isinstance(Data_Hash[f1][f2][f3][content], str) and len(Data_Hash[f1][f2][f3][content]) > 0:
-                                    coord = [s['bbox'][0], s['bbox'][1] -200, s['bbox'][2], s['bbox'][1] - 220]
-                                    coord[1] = coord[1]- 9 *len( Data_Hash[f1][f2][f3][content] )
+                                    # print( s['bbox'] )
+                                    coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
+                                    coord[1] = coord[1]- 7 *len( Data_Hash[f1][f2][f3][content] )
                                     # print( f1,f2,f3,content )
                                     print('I Have!!!')
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3][content], 8,
@@ -140,7 +140,7 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
 
                                     #print( f1 , f2 , f3 ,f4, content,left_coord )
 
-                                    coord = [s['bbox'][0], s['bbox'][1] - 300, s['bbox'][2], s['bbox'][1] - 320]
+                                    coord = [s['bbox'][0], s['bbox'][1] - 20, s['bbox'][2], s['bbox'][3]]
                                     coord[1] = coord[1] - 9 *len(Data_Hash[f1][f2][f3][f4][content])
                                     # print(f1,f2,f3,content)
                                     #print('I Have f4!!!')
