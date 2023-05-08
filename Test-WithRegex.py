@@ -4,6 +4,7 @@ class MultiRegexDict(defaultdict):
     def __init__(self):
         super().__init__(MultiRegexDict)
         self._data = set()
+        self._regex= set()
         self.k = ""  # a set for each dimension
     def __getitem__(self, key):
 
@@ -32,7 +33,8 @@ class MultiRegexDict(defaultdict):
         if isinstance(value, str):
 
             self.__getitem__(key)._data.add(value)
-
+        elif isinstance(value, re.Pattern):
+            self.__getitem__(key)._regex.add(value)
         elif isinstance(value, list):
 
             for v in value:
