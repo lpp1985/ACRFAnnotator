@@ -10,6 +10,7 @@ class MultiRegexDict(defaultdict):
 
         if key in self:
             data = super().__getitem__(key) # return a dict object
+            data.k = key
 
             # print(key)
             return data # return a dict object
@@ -17,8 +18,11 @@ class MultiRegexDict(defaultdict):
             for k in self:
                 if isinstance(k, re.Pattern):
                     if k.findall(key):
-                        self[k].k=k
-                        return self[k]
+                        data = self[k]
+                        # print("Key is"+key)
+                        # print("Key was "+self[k].k)
+                        data.k = key
+                        return data
             else:
                  data = super().__getitem__(key)
                  data.k = key
@@ -54,11 +58,9 @@ x["a"]["B"]["D"] = ["world","", "python"]
 
 x["a"]["B"][re.compile("\d+")] = ["world111","", "python"]
 # print( x["a"]["B"] )
-print(x["a"]["B"]["D"].data())
-print(x["a"]["B"]["D"].k)
-print(x["a"]["B"]["1  "].k)
-# print( x["a"]["B"].data() )
-# print(x["a"]["B"]["1"]["2"])
-# print(x["a"]["B"]["1"].data())
-# print(x["a"]["B"]["1"].k)
+# print(x["a"]["B"]["D"].data())
+print(x["a"]["B"].k)
+print(x["a"]["B"]["1"].k)
+
+
 
