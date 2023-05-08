@@ -3,30 +3,38 @@ import re
 class MultiRegexDict(defaultdict):
     def __init__(self):
         super().__init__(MultiRegexDict)
-        self._data = set() # a set for each dimension
+        self._data = set()
+        self.k = ""  # a set for each dimension
     def __getitem__(self, key):
-        if key in self:
 
-            return super().__getitem__(key) # return a dict object
+        if key in self:
+            data = super().__getitem__(key) # return a dict object
+
+            # print(key)
+            return data # return a dict object
         elif  isinstance(key, str):
             for k in self:
                 if isinstance(k, re.Pattern):
                     if k.findall(key):
+                        self[k].k=k
                         return self[k]
             else:
-                return super().__getitem__(key)
+                 data = super().__getitem__(key)
+                 data.k = key
+            return data
 
 
         else:
-            return super().__getitem__(key)
+            data = super().__getitem__(key)
+            data.k = key
+            return data
     def __setitem__(self, key, value):
         if isinstance(value, str):
-            # print("Data is "+value)
-            # self.__getitem__(key)._data=set()
+
             self.__getitem__(key)._data.add(value)
-            # print(self._data)# add string to set
+
         elif isinstance(value, list):
-            # self.__getitem__(key)._data=set()
+
             for v in value:
 
                 if len(v)>0 :
@@ -38,14 +46,17 @@ class MultiRegexDict(defaultdict):
 x = MultiRegexDict()
 
 # x["a"]["B"]
-x["aa"]["B"] = "hello"
+# x["aa"]["B"] = "hello"
 x["a"]["B"]["D"] = ["world","", "python"]
-x["a"]["B"]["D"] ="Data"
+# x["a"]["B"]["D"] ="Data"
 
 x["a"]["B"][re.compile("\d+")] = ["world111","", "python"]
 # print( x["a"]["B"] )
 print(x["a"]["B"]["D"].data())
-print( x["a"]["B"].data() )
-print(x["a"]["B"]["1"]["2"])
-print(x["a"]["B"]["1"].data())
+print(x["a"]["B"]["D"].k)
+print(x["a"]["B"]["1  "].k)
+# print( x["a"]["B"].data() )
+# print(x["a"]["B"]["1"]["2"])
+# print(x["a"]["B"]["1"].data())
+# print(x["a"]["B"]["1"].k)
 
