@@ -127,7 +127,7 @@ def AddAnnotation(input_file_name,output_file_name,jsonfile="Config.json"):
                                     coord = [s['bbox'][0], s['bbox'][1] -20, s['bbox'][2], s['bbox'][1]]
                                     coord[1] = coord[1]- 7 *len( Data_Hash[f1][f2][f3][content] )
                                     # print( f1,f2,f3,content )
-                                    print('I Have!!!')
+                                    # print('I Have!!!')
                                     annot = page.add_freetext_annot(coord, Data_Hash[f1][f2][f3][content], 8,
                                                                     border_color=BLUE_COLOR, text_color=textcolor,
                                                                     rotate=90,fill_color  = color,align = 1, )
