@@ -1,96 +1,20 @@
 {
-    "frmDM": {
-        "sctDM": {
-            "lstSXBRTH": {
-                "M": ""
-            },
-            "lstRC": {
-                "REPORTED": "",
-                "lstRACE": {},
-                "WHITE": "",
-                "BLACK": "",
-                "ASIAN": "",
-                "INDIAN": "",
-                "HAWAIIAN": "",
-                "OTHER": "",
-                "txtRACEOTH": {},
-                "NOT REPORTED": ""
-            },
-            "lstETHNICITY": {
-                "HISPANIC OR LATINO": "",
-                "NOT HISPANIC OR LATINO": "",
-                "NA": ""
-            },
-            "lstPART": {
-                "PART B": "",
-                "PART C": "",
-                "PART D": ""
-            },
-            "lstDAYS": {
-                "Y": "",
-                "N": ""
-            },
-            "lstHIV": {
-                "POSITIVE": "",
-                "NEGATIVE": ""
-            }
-        },
-        "sctDYN": {
-            "lstWBCLT": {
-                "Y": "",
-                "N": ""
-            }
-        },
-        "sctSUBID": {}
-    },
-    "frmDRUGTERM": {
-        "sctDRUGTERM": {
-            "lstDRUGCOMP": {
-                "COMPLETED": "",
-                "DISCONTINUED": "",
-                "lstDISCRS": {},
-                "ADVERSE EVENT": "",
-                "DEATH": "",
-                "LOST TO FOLLOW-UP": "",
-                "NON-COMPLIANT": "",
-                "PHYSICIAN DECISION": "",
-                "PROTOCOL VIOLATION": "",
-                "STUDY TERMINATED": "",
-                "SUBJECT WITHDREW CONSENT": "",
-                "OTHER": "",
-                "AT": "",
-                "EMERGENCY": ""
-            },
-            "lstCOMMERC": {
-                "Y": "",
-                "N": ""
-            }
-        }
-    },
-    "frmTERM": {
-        "sctTERM": {
-            "lstCOMPDISC": {
-                "COMPLETED": "",
-                "dtmCOMP": {},
-                "DISCONTINUED": "",
-                "dtmDISC": {},
-                "lstDISCRS": {},
-                "ADVERSE EVENT": "",
-                "DEATH": "",
-                "LOST TO FOLLOW-UP": "",
-                "NON-COMPLIANT": "",
-                "PHYSICIAN DECISION": "",
-                "PROTOCOL VIOLATION": "",
-                "STUDY TERMINATED": "",
-                "SUBJECT WITHDREW CONSENT": "",
-                "OTHER": "",
-                "AT": "",
-                "EMERGENCY": ""
-            },
-            "lstROLLOVER": {
-                "Y": "",
-                "N": ""
-            }
-        }
+    "表1": {
+        "标题3": {
+            "标题3-2": "",
+			"标题3-1": "",
+			"标题3-3": ""
+			},
+		"标题1": {
+            "标题1-2": "",
+			"标题1-3": "",
+			"标题1-1": ""
+			},
+		"标题2": {
+            "标题1-2": "",
+			"标题1-3": "",
+			"标题1-1": ""
+			}
+            
     }
 }
