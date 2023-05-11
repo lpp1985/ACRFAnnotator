@@ -419,6 +419,7 @@ B1-->K1
 B2-->K2
 K1-->h1
 C1-->K3
+
 C2-->K4
 D1-->K5
 D2-->K6
@@ -457,6 +458,77 @@ h7-->h10
 h8-->h10
 h9-->h10
 
+```
+
+```mermaid
+graph TD
+
+subgraph Catalog
+style Catalog fontSize:30px,fill:#fff,stroke:#000
+A
+B
+C
+D
+D1
+D2
+C1
+C2
+B1
+B2
+end
+
+K1>"Content1.1"]
+K2>"Content1.2"]
+K3>"Content2.1"]
+K4>"Content2.2"]
+K5>"Content3.1"]
+K6>"Content3.2"]
+A((PDF CRF))-->B(Frm1)
+A-->C(Frm2)
+A-->D(Frm3)
+B-->B1(Sect1.1)
+B-->B2(Sect1.2)
+B1-->K1
+B2-->K2
+K1-->h1
+C1-->K3
+C2-->K4
+D1-->K5
+D2-->K6
+C-->C1(Secttion2.1)
+C-->C2(Secttion2.2)
+D-->D1(Secttion3.1)
+D-->D2(Secttion3.2)
+
+subgraph Hash Tree
+  h1["SecKey(1.1)"]
+  h2["SecKey(1.2)"]
+  h3["SecKey(2.1)"]
+  h4["SecKey(2.2)"]
+  h5["SecKey(3.1)"]
+  h6["SecKey(3.2)"]
+  h7["PriKey(Frm1))"]
+  h8["PriKey(Frm2))"]
+  h9["PriKey(Frm3)"]
+  h10["root"]
+end
+
+
+K2-->h2
+K3-->h3
+K4-->h4
+
+K5-->h5
+K6-->h6
+h1-->h7
+h2-->h7
+h3-->h8
+h4-->h8
+h5-->h9
+h6-->h9
+h7-->h10
+h8-->h10
+h9-->h10
 ```
 
 
